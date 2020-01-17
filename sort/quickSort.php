@@ -5,7 +5,7 @@ $arr1 = [50,12,98,56,34,78,23,1,2,5,4,7,6,78,54,24,54,321,564,12,54,657,321,354,
 $arr3 = [50,12,98,56,34,12, 50, 60, 68, 50];
 $arr4 = [5,8,3,6,4];
 
-quickSort($arr3);
+$arr3 = quickSort3($arr3);
 var_dump($arr3);die;
 
 function quickSort(array &$arr, $l=0, $r=null)
@@ -79,4 +79,39 @@ function swap(&$arr, $a, $b)
     $temp = $arr[$a];
     $arr[$a] = $arr[$b];
     $arr[$b] = $temp;
+}
+
+
+
+
+
+
+// 还有一种空间复杂度为O(n)的解法，更容易理解
+function quickSort3(array $arr)
+{
+    $count = count($arr);
+    if ($count <= 1) {
+        return $arr;   // 原样返回数组
+    }
+
+    // 定义基准值 pivot
+    $pivot = $arr[0];  // 可以任意取一个元素作为基准值，这里选择第一个元素
+    $left = $right = [];   // 初始化两个数组，作为存放小于基准值和大于基准值的元素
+    $eq = [];   // 相等的部分
+
+    for ($i = 0; $i < $count; $i ++) {
+        if ($arr[$i] < $pivot) {
+            // 放入左数组
+            $left[] = $arr[$i];
+        } elseif ($arr[$i] > $pivot) {
+            $right[] = $arr[$i];
+        } else {
+            $eq[] = $arr[$i];
+        }
+    }
+
+    // 递归
+    $left = quickSort3($left);
+    $right = quickSort3($right);
+    return array_merge($left, $eq, $right);
 }
